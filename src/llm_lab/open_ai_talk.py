@@ -34,9 +34,19 @@ def llm_talk(talk:UserTalk):
         return
     for i in range(3):
         try:
-            completion = client.chat.completions.create(model=MODEL_DEFAULT_NAME,messages=talk.talk_msg)
-            print_result_info(completion)
-            format_assistant_msg(talk,completion.choices[0].message.content)
+            completion = client.chat.completions.create(model=MODEL_DEFAULT_NAME,messages=talk.talk_msg,stream=True)
+            full_msg = []
+            for chunk in completion:
+                row_msg = chunk.choices[0].delta.content or ""
+                if row_msg:
+                    print(row_msg,end="",flush=True)
+                    full_msg.append(row_msg)
+            print()
+            # 组合message
+            full_msg_str = "".join(full_msg)
+            
+            # print_result_info(completion)
+            format_assistant_msg(talk,full_msg_str)
             break
         except Exception as e:
             print(f"失败：{e},正在重试第{i}次")
