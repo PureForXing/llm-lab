@@ -5,6 +5,20 @@
 			"label": "test_qwen_model",
 			"type": "shell",
 			"command": "python -m src.llm_lab.test_model"
+		},
+		{
+			"label": "install-deps",
+			"type": "shell",
+			"command": "npm install ant-design-vue"
+		},
+		{
+			"label": "dev",
+			"type": "shell",
+			"command": "npm run dev",
+			"isBackground": true,
+			"options": {
+				"cwd": "${workspaceFolder}/llm_web"
+			}
 		}
 	]
 }
